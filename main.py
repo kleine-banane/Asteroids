@@ -1,3 +1,5 @@
+# to start venv: source venv/bin/activate
+
 import sys
 import pygame
 from constants import *
@@ -46,7 +48,7 @@ def main():
             
             for shot in shots:
                 if asteroid.check_collision(shot):
-                    asteroid.kill()
+                    asteroid.split()
                     shot.kill()
                     
         for draw in drawable:        
