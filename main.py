@@ -19,6 +19,7 @@ def main():
     score = 0
     font = pygame.font.Font(None, 36)
     dead = False
+    written = False
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -69,6 +70,10 @@ def main():
 
         if dead:
             display_score(score, screen, font)
+            if not written:
+                save_score(score)
+                written = True
+
         pygame.display.flip()
         dt = clock.tick(60) / 1000
 
@@ -77,6 +82,10 @@ def display_score(score, screen, font):
     game_over_score = font.render(f"YOUR SCORE IS: {score}!", True, (255, 255, 255))
     screen.blit(game_over_text, (SCREEN_WIDTH//2 - 75, SCREEN_HEIGHT//2 - 100))
     screen.blit(game_over_score, (SCREEN_WIDTH//2 - 105, SCREEN_HEIGHT//2))
+
+def save_score(score):
+    with open("high_score.txt", "w") as file:
+        file.write(str(score))
 
 if __name__ == "__main__":
     main()
