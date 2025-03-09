@@ -26,3 +26,13 @@ class CircleShape(pygame.sprite.Sprite):
         if distance <= (self.radius + other.radius):
             return True
         return False
+    
+    def wrap_around(self):
+        if self.position.y <= (0 - self.radius):
+            self.position.y = 720 + self.radius
+        elif self.position.y >= (720 + self.radius):
+            self.position.y = 0 - self.radius
+        if self.position.x <= (0 - self.radius):
+            self.position.x = 1280 + self.radius
+        elif self.position.x >= (1280 + self.radius):
+            self.position.x = 0 - self.radius
