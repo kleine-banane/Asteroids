@@ -18,6 +18,7 @@ def main():
     print(f"Screen height: {SCREEN_HEIGHT}")
     score = 0
     font = pygame.font.Font(None, 36)
+    dead = False
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -49,13 +50,9 @@ def main():
 
         for asteroid in asteroids:
             if asteroid.check_collision(player):
-                print("Game Over!")
                 asteroidfield.kill()
-                for asteroid in asteroids:
-                    asteroid.kill()
                 player.kill()
-                game_over = font.render(f"Your score is: {score}!", True, (255, 255, 255))
-                screen.blit(game_over, (SCREEN_HEIGHT/2, SCREEN_WIDTH/2))
+                dead = True
             
             for shot in shots:
                 if asteroid.check_collision(shot):
@@ -70,8 +67,16 @@ def main():
             screen.blit(score_text, (10, 10))        
             draw.draw(screen)
 
+        if dead:
+            display_score(score, screen, font)
         pygame.display.flip()
         dt = clock.tick(60) / 1000
+
+def display_score(score, screen, font):
+    game_over_text = font.render("GAME OVER!", True, (255, 255, 255))
+    game_over_score = font.render(f"YOUR SCORE IS: {score}!", True, (255, 255, 255))
+    screen.blit(game_over_text, (SCREEN_WIDTH//2 - 75, SCREEN_HEIGHT//2 - 100))
+    screen.blit(game_over_score, (SCREEN_WIDTH//2 - 105, SCREEN_HEIGHT//2))
 
 if __name__ == "__main__":
     main()
