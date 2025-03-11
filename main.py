@@ -79,7 +79,7 @@ def main():
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_r] and dead:
-            print("pressed r")
+            print("Restarted the Game!")
             player, asteroidfield = reset_game(asteroids)
             dead = False
             score = 0
@@ -100,14 +100,35 @@ def reset_game(asteroids):
 
 
 def display_score(score, screen, font):
+    try:
+        with open("high_score.txt", "r") as file:
+            high_score = file.read()
+    except FileNotFoundError:
+        with open("high_score.txt", "w") as file:
+            file.write("0")        
+        with open("high_score.txt", "r") as file:
+            high_score = file.read()
+            
     game_over_text = font.render("GAME OVER!", True, (255, 255, 255))
     game_over_score = font.render(f"YOUR SCORE IS: {score}", True, (255, 255, 255))
+    game_over_high_score = font.render(f"HIGH SCORE = {high_score}", True, (255, 255, 255))
     screen.blit(game_over_text, (SCREEN_WIDTH//2 - 75, SCREEN_HEIGHT//2 - 100))
     screen.blit(game_over_score, (SCREEN_WIDTH//2 - 105, SCREEN_HEIGHT//2))
+    screen.blit(game_over_high_score, (SCREEN_WIDTH//2 - 85, SCREEN_HEIGHT//2 + 100))
 
 def save_score(score):
-    with open("high_score.txt", "w") as file:
-        file.write(str(score))
+    if is_high_score(score):
+        with open("high_score.txt", "w") as file:
+            file.write(str(score))
+
+def is_high_score(score):
+    with open("high_score.txt", "r+") as file:
+        try:
+            if score > int(file.read()):
+                return True
+            return False
+        except ValueError:
+            file.write(str(score))
 
 if __name__ == "__main__":
     main()
