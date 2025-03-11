@@ -130,5 +130,8 @@ def is_high_score(score):
         except ValueError:
             file.write(str(score))
 
+def fps_counter():
+    timer = time.time()
+
 if __name__ == "__main__":
     main()
