@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 import pygame
 from constants import *
 from player import *
@@ -20,6 +21,7 @@ def main():
     font = pygame.font.Font(None, 36)
     dead = False
     written = False
+    keys = pygame.key.get_pressed()
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -36,8 +38,7 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
-    player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
-    asteroidfield = AsteroidField()
+    player, asteroidfield = initialize_game()
 
     while True:
         for event in pygame.event.get():
@@ -51,6 +52,8 @@ def main():
 
         for asteroid in asteroids:
             if asteroid.check_collision(player):
+                for shot in shots:
+                    shot.kill()
                 asteroidfield.kill()
                 player.kill()
                 dead = True
@@ -77,9 +80,22 @@ def main():
         pygame.display.flip()
         dt = clock.tick(60) / 1000
 
+def initialize_game():
+    player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+    asteroidfield = AsteroidField()
+    return player, asteroidfield
+
+def reset_game():
+    for asteroid in asteroids:
+        asteroid.kill()
+    player, asteroidfield = initialize_game()
+    score = 0
+    dead = False
+
+
 def display_score(score, screen, font):
     game_over_text = font.render("GAME OVER!", True, (255, 255, 255))
-    game_over_score = font.render(f"YOUR SCORE IS: {score}!", True, (255, 255, 255))
+    game_over_score = font.render(f"YOUR SCORE IS: {score}", True, (255, 255, 255))
     screen.blit(game_over_text, (SCREEN_WIDTH//2 - 75, SCREEN_HEIGHT//2 - 100))
     screen.blit(game_over_score, (SCREEN_WIDTH//2 - 105, SCREEN_HEIGHT//2))
 
