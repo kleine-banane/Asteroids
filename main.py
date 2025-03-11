@@ -21,7 +21,6 @@ def main():
     font = pygame.font.Font(None, 36)
     dead = False
     written = False
-    keys = pygame.key.get_pressed()
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -77,6 +76,15 @@ def main():
                 save_score(score)
                 written = True
 
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_r] and dead:
+            print("pressed r")
+            player, asteroidfield = reset_game(asteroids)
+            dead = False
+            score = 0
+            written = False
+
         pygame.display.flip()
         dt = clock.tick(60) / 1000
 
@@ -85,12 +93,10 @@ def initialize_game():
     asteroidfield = AsteroidField()
     return player, asteroidfield
 
-def reset_game():
+def reset_game(asteroids):
     for asteroid in asteroids:
         asteroid.kill()
-    player, asteroidfield = initialize_game()
-    score = 0
-    dead = False
+    return initialize_game()
 
 
 def display_score(score, screen, font):
