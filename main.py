@@ -21,6 +21,7 @@ def main():
     font = pygame.font.Font(None, 36)
     dead = False
     written = False
+    asteroid_count = 0
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -62,6 +63,11 @@ def main():
                     asteroid.split()
                     shot.kill()
                     score += 1
+            
+            asteroid_count += 1
+            if asteroid_count > 25:
+                asteroid.kill_on_edge()
+        asteroid_count = 0
         
         for wrap in wrappable:
             wrap.wrap_around()

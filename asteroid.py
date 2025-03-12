@@ -33,3 +33,12 @@ class Asteroid(CircleShape):
         asteroid = Asteroid(old_position.x, old_position.y, new_radius)
         asteroid.velocity = new_velocity_2
         
+    def kill_on_edge(self):
+        if (
+            self.position.y <= (0 - self.radius) or
+            self.position.y >= (720 + self.radius) or
+            self.position.x <= (0 - self.radius) or
+            self.position.x >= (1280 + self.radius)
+        ):
+            self.kill()
+            print("killed")
