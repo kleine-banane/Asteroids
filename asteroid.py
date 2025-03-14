@@ -41,4 +41,3 @@ class Asteroid(CircleShape):
             self.position.x >= (1280 + self.radius)
         ):
             self.kill()
-            print("killed")
